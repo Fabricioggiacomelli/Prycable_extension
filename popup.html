@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Three Ar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon-wrap">
+        <img src="images/LogoCRM.png" alt="Three Ar" class="brand-icon" width="38" height="38">
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">Three Ar</span>
+        <span class="brand-tagline">prycable.com.br</span>
+      </div>
+    </div>
+
+    <div class="status-chip" id="status-chip">
+      <span id="status-dot" class="status-dot"></span>
+      <span id="status-text">Pronto</span>
+    </div>
+  </header>
+
+  <!-- ═══ PROGRESS BAR ═══ -->
+  <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div id="progress-bar" class="progress-fill"></div>
+  </div>
+
+  <!-- ═══ STOP BUTTON ═══ -->
+  <div id="stop-bar" class="stop-bar" style="display:none">
+    <button id="btn-stop" class="btn-stop" aria-label="Parar execução">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <rect x="2" y="2" width="8" height="8" rx="1.5" fill="currentColor"/>
+      </svg>
+      Parar execução
+    </button>
+  </div>
+
+  <!-- ═══ TABS ═══ -->
+  <div class="tab-rail" role="tablist">
+    <button class="tab-btn active" data-tab="add" role="tab" aria-selected="true" aria-controls="tab-add">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/>
+      </svg>
+      Adicionar Produtos
+    </button>
+    <button class="tab-btn" data-tab="desc" role="tab" aria-selected="false" aria-controls="tab-desc">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="2" y1="4" x2="12" y2="4"/><line x1="2" y1="7" x2="9" y2="7"/><line x1="2" y1="10" x2="11" y2="10"/>
+      </svg>
+      Buscar Descrições
+    </button>
+  </div>
+
+  <!-- ═══ TAB: Adicionar Produtos ═══ -->
+  <div id="tab-add" class="tab-panel active" role="tabpanel">
+    <div class="glass-card">
+      <label class="field-label" for="add-items">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <rect x="1" y="1" width="10" height="10" rx="2"/>
+          <line x1="4" y1="6" x2="8" y2="6"/><line x1="6" y1="4" x2="6" y2="8"/>
+        </svg>
+        Lista de produtos — formato <code>código,quantidade</code>
+      </label>
+      <textarea id="add-items" rows="11" spellcheck="false"
+        placeholder="26669814,600&#10;26669817,800&#10;26669050,150"
+        aria-label="Lista de produtos"></textarea>
+      <div class="field-actions">
+        <button id="btn-add" class="btn-execute" aria-label="Executar adição de produtos">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="currentColor"/>
+          </svg>
+          Executar
+        </button>
+        <button id="btn-add-clear" class="btn-ghost" aria-label="Limpar lista">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/>
+          </svg>
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: Buscar Descrições ═══ -->
+  <div id="tab-desc" class="tab-panel" role="tabpanel" hidden>
+    <div class="glass-card">
+      <label class="field-label" for="desc-codes">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="5" cy="5" r="3.5"/><line x1="8" y1="8" x2="11" y2="11"/>
+        </svg>
+        Códigos para busca — um por linha
+      </label>
+      <textarea id="desc-codes" rows="11" spellcheck="false"
+        placeholder="23884402&#10;29712819&#10;26564256"
+        aria-label="Códigos dos produtos"></textarea>
+      <div class="field-actions">
+        <button id="btn-desc" class="btn-execute" aria-label="Executar busca de descrições">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="currentColor"/>
+          </svg>
+          Executar
+        </button>
+        <button id="btn-desc-copy" class="btn-ghost btn-excel" disabled aria-label="Copiar dados para Excel">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <rect x="1" y="4" width="8" height="8" rx="1.5"/>
+            <path d="M4 4V3a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/>
+          </svg>
+          Copiar para Excel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LOG TERMINAL ═══ -->
+  <div class="terminal" role="log" aria-live="polite" aria-label="Log de execução">
+    <div class="terminal-header">
+<span class="terminal-title">console</span>
+      <button id="btn-clear-log" class="terminal-clear" aria-label="Limpar log">limpar</button>
+    </div>
+    <div id="log" class="terminal-body"></div>
+  </div>
+
+  <!-- ═══ RODAPÉ ═══ -->
+  <footer class="app-footer">
+    <img src="images/LogoCRM.png" alt="CRM" class="footer-crm-icon">
+    <span class="footer-text">Three Ar Representações</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

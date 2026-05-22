@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Three Ar",
+  "version": "1.0",
+  "description": "Automação de produtos Three Ar — prycable.com.br",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Three Ar",
+    "default_icon": {
+      "16":  "images/LogoCRM.png",
+      "32":  "images/LogoCRM.png",
+      "48":  "images/LogoCRM.png",
+      "128": "images/LogoCRM.png"
+    }
+  },
+  "icons": {
+    "16":  "images/LogoCRM.png",
+    "32":  "images/LogoCRM.png",
+    "48":  "images/LogoCRM.png",
+    "128": "images/LogoCRM.png"
+  }
+}
