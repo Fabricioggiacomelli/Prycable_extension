@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Three Ar",
-  "version": "1.0",
-  "description": "Automação de produtos Three Ar — prycable.com.br",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "version": "2.4.0",
+  "description": "Automações de cotação Three Ar — produtos, descrições, preços, oferta CRM e follow-up no prycable.com.br",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_title": "Three Ar",

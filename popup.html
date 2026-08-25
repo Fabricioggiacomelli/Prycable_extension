@@ -28,6 +28,15 @@
     </div>
   </header>
 
+  <!-- ═══ CLIENT BAR ═══ -->
+  <div id="client-bar" class="client-bar" style="display:none">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/>
+    </svg>
+    <span id="client-name" class="client-name"></span>
+    <span id="client-cnpj" class="client-cnpj"></span>
+  </div>
+
   <!-- ═══ PROGRESS BAR ═══ -->
   <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div id="progress-bar" class="progress-fill"></div>
@@ -43,19 +52,48 @@
     </button>
   </div>
 
+  <!-- ═══ PAUSE BAR ═══ -->
+  <div id="pause-bar" class="pause-bar" style="display:none">
+    <span id="pause-msg" class="pause-msg"></span>
+    <div class="pause-actions">
+      <button id="btn-continue" class="btn-continue" aria-label="Continuar execução">Continuar</button>
+      <button id="btn-skip" class="btn-skip" aria-label="Pular este produto">Pular este</button>
+      <button id="btn-pause-stop" class="btn-stop" aria-label="Parar execução">Parar tudo</button>
+    </div>
+  </div>
+
   <!-- ═══ TABS ═══ -->
   <div class="tab-rail" role="tablist">
     <button class="tab-btn active" data-tab="add" role="tab" aria-selected="true" aria-controls="tab-add">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/>
       </svg>
-      Adicionar Produtos
+      Adicionar
     </button>
     <button class="tab-btn" data-tab="desc" role="tab" aria-selected="false" aria-controls="tab-desc">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <line x1="2" y1="4" x2="12" y2="4"/><line x1="2" y1="7" x2="9" y2="7"/><line x1="2" y1="10" x2="11" y2="10"/>
       </svg>
-      Buscar Descrições
+      Descrições
+    </button>
+    <button class="tab-btn" data-tab="offer" role="tab" aria-selected="false" aria-controls="tab-offer">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="2" y="2" width="10" height="10" rx="2"/>
+        <line x1="5" y1="7" x2="9" y2="7"/><line x1="7" y1="5" x2="7" y2="9"/>
+      </svg>
+      Oferta CRM
+    </button>
+    <button class="tab-btn" data-tab="price" role="tab" aria-selected="false" aria-controls="tab-price">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M7 1.8v10.4"/><path d="M9.6 4.1H5.9a1.6 1.6 0 0 0 0 3.2h2.2a1.6 1.6 0 0 1 0 3.2H4.4"/>
+      </svg>
+      Buscar Preço
+    </button>
+    <button class="tab-btn" data-tab="fup" role="tab" aria-selected="false" aria-controls="tab-fup">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 1.6v10.8"/><path d="M3 2.4h7.4l-1.5 2.6 1.5 2.6H3"/>
+      </svg>
+      Follow-up
     </button>
   </div>
 
@@ -69,14 +107,18 @@
         </svg>
         Lista de produtos — formato <code>código,quantidade</code>
       </label>
-      <textarea id="add-items" rows="11" spellcheck="false"
-        placeholder="26669814,600&#10;26669817,800&#10;26669050,150"
-        aria-label="Lista de produtos"></textarea>
+      <div class="textarea-wrap">
+        <div class="line-numbers" id="add-line-nums" aria-hidden="true"></div>
+        <textarea id="add-items" rows="11" spellcheck="false"
+          placeholder="26669814,600&#10;26669817,800&#10;26669050,150"
+          aria-label="Lista de produtos"></textarea>
+      </div>
       <div class="field-actions">
         <button id="btn-add" class="btn-execute" aria-label="Executar adição de produtos">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
             <polygon points="3,1 13,7 3,13" fill="currentColor"/>
           </svg>
+          <span class="btn-spinner" aria-hidden="true"></span>
           Executar
         </button>
         <button id="btn-add-clear" class="btn-ghost" aria-label="Limpar lista">
@@ -98,14 +140,18 @@
         </svg>
         Códigos para busca — um por linha
       </label>
-      <textarea id="desc-codes" rows="11" spellcheck="false"
-        placeholder="23884402&#10;29712819&#10;26564256"
-        aria-label="Códigos dos produtos"></textarea>
+      <div class="textarea-wrap">
+        <div class="line-numbers" id="desc-line-nums" aria-hidden="true"></div>
+        <textarea id="desc-codes" rows="11" spellcheck="false"
+          placeholder="23884402&#10;29712819&#10;26564256"
+          aria-label="Códigos dos produtos"></textarea>
+      </div>
       <div class="field-actions">
         <button id="btn-desc" class="btn-execute" aria-label="Executar busca de descrições">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
             <polygon points="3,1 13,7 3,13" fill="currentColor"/>
           </svg>
+          <span class="btn-spinner" aria-hidden="true"></span>
           Executar
         </button>
         <button id="btn-desc-copy" class="btn-ghost btn-excel" disabled aria-label="Copiar dados para Excel">
@@ -114,6 +160,189 @@
             <path d="M4 4V3a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/>
           </svg>
           Copiar para Excel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: Oferta CRM ═══ -->
+  <div id="tab-offer" class="tab-panel" role="tabpanel" hidden>
+    <div class="glass-card">
+      <div class="discount-row">
+        <label class="field-label" for="offer-discount">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="4" cy="4" r="1.5"/><circle cx="8" cy="8" r="1.5"/><line x1="9.5" y1="2.5" x2="2.5" y2="9.5"/>
+          </svg>
+          Desconto para valorização
+        </label>
+        <div class="discount-input-wrap">
+          <input type="number" id="offer-discount" class="discount-input"
+            min="0" max="100" step="0.01" placeholder="0" value="0"
+            aria-label="Percentual de desconto">
+          <span class="discount-suffix">%</span>
+        </div>
+      </div>
+      <label class="field-label" for="offer-items">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <rect x="1" y="1" width="10" height="10" rx="2"/>
+          <line x1="4" y1="6" x2="8" y2="6"/><line x1="6" y1="4" x2="6" y2="8"/>
+        </svg>
+        Lista de produtos — formato <code>código,quantidade</code>
+      </label>
+      <div class="textarea-wrap textarea-wrap-sm">
+        <div class="line-numbers" id="offer-line-nums" aria-hidden="true"></div>
+        <textarea id="offer-items" rows="9" spellcheck="false"
+          placeholder="26669814,600&#10;26669817,800&#10;26669050,150"
+          aria-label="Lista de produtos para oferta CRM"></textarea>
+      </div>
+      <div class="field-actions">
+        <button id="btn-offer" class="btn-execute" aria-label="Executar geração de oferta">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="currentColor"/>
+          </svg>
+          <span class="btn-spinner" aria-hidden="true"></span>
+          Executar
+        </button>
+        <button id="btn-offer-copy" class="btn-ghost btn-crm" disabled aria-label="Copiar para CRM">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <rect x="1" y="4" width="8" height="8" rx="1.5"/>
+            <path d="M4 4V3a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/>
+          </svg>
+          Copiar para CRM
+        </button>
+        <button id="btn-offer-clear" class="btn-ghost" aria-label="Limpar lista">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/>
+          </svg>
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: Buscar Preço ═══ -->
+  <div id="tab-price" class="tab-panel" role="tabpanel" hidden>
+    <div class="glass-card">
+      <div class="discount-row">
+        <label class="field-label" for="price-discount">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="4" cy="4" r="1.5"/><circle cx="8" cy="8" r="1.5"/><line x1="9.5" y1="2.5" x2="2.5" y2="9.5"/>
+          </svg>
+          Desconto para valorização
+        </label>
+        <div class="discount-input-wrap">
+          <input type="number" id="price-discount" class="discount-input"
+            min="0" max="100" step="0.01" placeholder="0" value="0"
+            aria-label="Percentual de desconto">
+          <span class="discount-suffix">%</span>
+        </div>
+      </div>
+      <label class="field-label" for="price-items">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="5" cy="5" r="3.5"/><line x1="8" y1="8" x2="11" y2="11"/>
+        </svg>
+        <code>código</code> (usa a qtd mínima) ou <code>código,quantidade</code>
+      </label>
+      <div class="textarea-wrap textarea-wrap-sm">
+        <div class="line-numbers" id="price-line-nums" aria-hidden="true"></div>
+        <textarea id="price-items" rows="9" spellcheck="false"
+          placeholder="26669814&#10;26669817&#10;26669050,150"
+          aria-label="Lista de produtos para busca de preço"></textarea>
+      </div>
+      <div class="field-actions">
+        <button id="btn-price" class="btn-execute" aria-label="Executar busca de preços">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="currentColor"/>
+          </svg>
+          <span class="btn-spinner" aria-hidden="true"></span>
+          Executar
+        </button>
+        <button id="btn-price-copy" class="btn-ghost btn-price" disabled aria-label="Copiar preços na ordem">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <rect x="1" y="4" width="8" height="8" rx="1.5"/>
+            <path d="M4 4V3a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/>
+          </svg>
+          Copiar preços
+        </button>
+        <button id="btn-price-clear" class="btn-ghost" aria-label="Limpar lista">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/>
+          </svg>
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: Follow-up ═══ -->
+  <div id="tab-fup" class="tab-panel" role="tabpanel" hidden>
+    <div class="glass-card">
+      <label class="field-label" for="fup-status">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M2.5 1.5v9"/><path d="M2.5 2.2h6.2l-1.3 2.2 1.3 2.2H2.5"/>
+        </svg>
+        Status da cotação — selecione o motivo
+      </label>
+      <div class="select-wrap">
+        <!-- Opções renderizadas por popup.js a partir de FOLLOWUP_STATUSES -->
+        <select id="fup-status" class="select-input" aria-label="Status da cotação"></select>
+        <svg class="select-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <polyline points="2,4 5,7 8,4"/>
+        </svg>
+      </div>
+
+      <!-- Prazo: só aparece para motivos com dayRequired (hoje apenas Y08) -->
+      <div class="discount-row" id="fup-date-row" style="display:none">
+        <label class="field-label" for="fup-date">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <rect x="1.5" y="2.5" width="9" height="8" rx="1.5"/>
+            <line x1="1.5" y1="5" x2="10.5" y2="5"/><line x1="4" y1="1.5" x2="4" y2="3"/><line x1="8" y1="1.5" x2="8" y2="3"/>
+          </svg>
+          Prazo — obrigatório neste motivo
+        </label>
+        <div class="discount-input-wrap">
+          <input type="date" id="fup-date" class="date-input" aria-label="Data do prazo">
+        </div>
+      </div>
+
+      <label class="field-label" for="fup-obs">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M1.5 2.5h9"/><path d="M1.5 5.5h9"/><path d="M1.5 8.5h5.5"/>
+        </svg>
+        Observação — obrigatória, vale para todas as cotações
+      </label>
+      <div class="textarea-wrap textarea-wrap-obs">
+        <textarea id="fup-obs" rows="2" spellcheck="false"
+          placeholder="Motivo/comentário do follow-up"
+          aria-label="Observação do follow-up"></textarea>
+      </div>
+
+      <label class="field-label" for="fup-offers">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <rect x="1.5" y="1" width="9" height="10" rx="2"/>
+          <line x1="4" y1="4" x2="8" y2="4"/><line x1="4" y1="6.5" x2="8" y2="6.5"/><line x1="4" y1="9" x2="6" y2="9"/>
+        </svg>
+        Número das cotações — uma por linha
+      </label>
+      <div class="textarea-wrap textarea-wrap-fup">
+        <div class="line-numbers" id="fup-line-nums" aria-hidden="true"></div>
+        <textarea id="fup-offers" rows="6" spellcheck="false"
+          placeholder="6010816313&#10;6010816314"
+          aria-label="Números das cotações"></textarea>
+      </div>
+      <div class="field-actions">
+        <button id="btn-fup" class="btn-execute" aria-label="Atualizar status das cotações">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="currentColor"/>
+          </svg>
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span id="fup-btn-label">Executar</span>
+        </button>
+        <button id="btn-fup-clear" class="btn-ghost" aria-label="Limpar lista">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/>
+          </svg>
+          Limpar
         </button>
       </div>
     </div>
@@ -132,6 +361,7 @@
   <footer class="app-footer">
     <img src="images/LogoCRM.png" alt="CRM" class="footer-crm-icon">
     <span class="footer-text">Three Ar Representações</span>
+    <span class="footer-version">v2.4.0</span>
   </footer>
 
   <script src="popup.js"></script>

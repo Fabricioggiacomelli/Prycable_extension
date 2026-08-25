@@ -3,7 +3,6 @@
    Design System: Inter · Cyan #06b6d4 · Deep Blue Gradient
    ═══════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* ── Reset & Base ── */
 *, *::before, *::after {
@@ -24,8 +23,8 @@
   --cyan-glow:      rgba(6, 182, 212, 0.30);
   --cyan-glow-lg:   rgba(6, 182, 212, 0.18);
   --text-primary:   rgba(255, 255, 255, 0.95);
-  --text-secondary: rgba(255, 255, 255, 0.60);
-  --text-muted:     rgba(255, 255, 255, 0.35);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted:     rgba(255, 255, 255, 0.48);
   --red:            #f87171;
   --green:          #4ade80;
   --yellow:         #fbbf24;
@@ -43,11 +42,26 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  width: 460px;
+  width: 500px;
   background: linear-gradient(150deg, var(--bg-from) 0%, #0f1f4a 45%, var(--bg-to) 100%);
   color: var(--text-primary);
   min-height: 100px;
   overflow-x: hidden;
+}
+
+/* ── Focus-visible ring (acessibilidade via teclado) ── */
+button:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ── Scrollbar ── */
@@ -169,6 +183,44 @@ body {
 }
 
 /* ══════════════════════════════════════════════
+   CLIENT BAR
+══════════════════════════════════════════════ */
+.client-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(6, 182, 212, 0.05);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.12);
+  min-height: 0;
+}
+
+.client-bar svg {
+  flex-shrink: 0;
+  color: var(--cyan);
+  opacity: 0.7;
+}
+
+.client-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+.client-cnpj {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  white-space: nowrap;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════
    PROGRESS BAR
 ══════════════════════════════════════════════ */
 .progress-track {
@@ -198,19 +250,91 @@ body {
   justify-content: flex-end;
 }
 
+/* ══════════════════════════════════════════════
+   PAUSE BAR
+══════════════════════════════════════════════ */
+.pause-bar {
+  padding: 8px 14px;
+  background: rgba(251, 191, 36, 0.07);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pause-msg {
+  font-size: 12.5px;
+  color: rgba(251, 191, 36, 0.95);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.pause-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-skip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: var(--radius-sm);
+  color: rgba(251, 191, 36, 0.95);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 34px;
+  transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.btn-skip:hover {
+  background: rgba(251, 191, 36, 0.25);
+  border-color: rgba(251, 191, 36, 0.55);
+}
+
+.btn-continue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(74, 222, 128, 0.18);
+  border: 1px solid rgba(74, 222, 128, 0.45);
+  border-radius: var(--radius-sm);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 34px;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.12);
+  transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+.btn-continue:hover {
+  background: rgba(74, 222, 128, 0.28);
+  border-color: rgba(74, 222, 128, 0.65);
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.22);
+}
+
 .btn-stop {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 7px 14px;
   background: rgba(248, 113, 113, 0.15);
   border: 1px solid rgba(248, 113, 113, 0.35);
   border-radius: var(--radius-sm);
   color: var(--red);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
+  min-height: 34px;
   transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
 }
 
@@ -233,13 +357,13 @@ body {
 .tab-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex: 1;
-  padding: 9px 12px;
+  padding: 9px 6px;
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   color: var(--text-secondary);
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -251,6 +375,11 @@ body {
 
 .tab-btn:first-child {
   border-radius: var(--radius-md) 0 0 0;
+  border-right: none;
+}
+
+.tab-btn:not(:first-child):not(:last-child) {
+  border-radius: 0;
   border-right: none;
 }
 
@@ -331,21 +460,62 @@ body {
   letter-spacing: 0.1px;
 }
 
-/* ── Textarea ── */
-textarea {
-  display: block;
-  width: 100%;
+/* ── Textarea Wrap (borda + fundo compartilhados com line-numbers) ── */
+.textarea-wrap {
+  display: flex;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-md);
+  overflow: hidden;
+  height: calc(11 * 12px * 1.65 + 20px); /* 11 linhas + padding */
+  transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+.textarea-wrap:focus-within {
+  border-color: var(--glass-border-focus);
+  box-shadow:
+    0 0 0 3px var(--cyan-glow-lg),
+    0 0 14px rgba(6, 182, 212, 0.08);
+}
+
+/* ── Números de linha ── */
+.line-numbers {
+  padding: 10px 8px 10px 10px;
+  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.22);
+  text-align: right;
+  user-select: none;
+  pointer-events: none;
+  overflow: hidden;
+  min-width: 36px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.line-numbers div {
+  height: calc(12px * 1.65);
+}
+
+/* ── Textarea ── */
+textarea {
+  flex: 1;
+  display: block;
+  min-width: 0;
+  height: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   padding: 10px 11px;
   font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
   font-size: 12px;
   line-height: 1.65;
   color: rgba(255,255,255,0.88);
-  resize: vertical;
+  resize: none;
   outline: none;
-  transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+  overflow-y: auto;
   caret-color: var(--cyan);
 }
 
@@ -353,11 +523,165 @@ textarea::placeholder {
   color: rgba(255,255,255,0.18);
 }
 
-textarea:focus {
+/* ── Textarea tamanho reduzido (aba oferta CRM — dá espaço ao campo de desconto) ── */
+.textarea-wrap-sm {
+  height: calc(9 * 12px * 1.65 + 20px);
+}
+
+/* ── Campo de desconto ── */
+.discount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.discount-row .field-label {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.discount-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  transition: border-color var(--duration) var(--ease);
+}
+
+.discount-input-wrap:focus-within {
   border-color: var(--glass-border-focus);
+}
+
+.discount-input {
+  width: 52px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  caret-color: var(--cyan);
+  -moz-appearance: textfield;
+}
+
+.discount-input::-webkit-inner-spin-button,
+.discount-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.discount-suffix {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ── Botão Copiar para CRM ── */
+.btn-crm:not(:disabled) {
+  border-color: rgba(6, 182, 212, 0.35);
+  color: rgba(6, 182, 212, 0.85);
+}
+
+.btn-crm:hover:not(:disabled) {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.55);
+  color: var(--cyan-light);
+}
+
+/* ── Campos da aba Follow-up ── */
+.textarea-wrap-obs {
+  height: calc(2 * 12px * 1.65 + 20px);
+  margin-bottom: 10px;
+}
+
+.textarea-wrap-fup {
+  height: calc(6 * 12px * 1.65 + 20px);
+}
+
+.date-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  caret-color: var(--cyan);
+  color-scheme: dark; /* calendário nativo em tema escuro */
+}
+
+/* Estado de confirmação do Executar (gravação real no ERP) */
+.btn-execute.confirm {
+  background: linear-gradient(135deg, rgba(251,191,36,0.90) 0%, rgba(245,158,11,0.85) 100%);
+  border-color: rgba(251, 191, 36, 0.65);
+  color: #1a1205;
   box-shadow:
-    0 0 0 3px var(--cyan-glow-lg),
-    0 0 14px rgba(6, 182, 212, 0.08);
+    0 0 16px rgba(251, 191, 36, 0.35),
+    0 2px 8px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.20) inset;
+}
+
+/* ── Select de status (aba Follow-up) ── */
+.select-wrap {
+  position: relative;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.select-input {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 9px 30px 9px 10px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--duration) var(--ease);
+}
+
+.select-input:hover,
+.select-input:focus {
+  border-color: var(--glass-border-focus);
+}
+
+/* O dropdown nativo herda o tema do sistema — força fundo escuro nas opções */
+.select-input option {
+  background: #101a33;
+  color: var(--text-primary);
+}
+
+.select-caret {
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* ── Botão Copiar preços ── */
+.btn-price:not(:disabled) {
+  border-color: rgba(251, 191, 36, 0.35);
+  color: rgba(251, 191, 36, 0.85);
+}
+
+.btn-price:hover:not(:disabled) {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.55);
+  color: var(--yellow);
 }
 
 /* ── Field Actions ── */
@@ -421,6 +745,25 @@ textarea:focus {
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
+}
+
+/* Spinner de loading dentro do botão Executar */
+.btn-spinner {
+  display: none;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn-execute.loading .btn-spinner { display: block; }
+.btn-execute.loading .btn-icon    { display: none; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ── Ghost Button ── */
@@ -538,17 +881,25 @@ textarea:focus {
   font-weight: 400;
 }
 
+.footer-version {
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.3px;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  margin-left: 2px;
+}
+
 /* ── Log body ── */
 .terminal-body {
   padding: 8px 12px 10px;
   font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
   font-size: 11px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.45);
   min-height: 100px;
-  max-height: 155px;
+  max-height: 200px;
   overflow-y: auto;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 /* Empty state */
